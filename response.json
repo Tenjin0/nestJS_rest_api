@@ -1,0 +1,37 @@
+{
+    "status": 400,
+    "error_code": "BASIC_AUTH_VALIDATION_FAILED",
+    "message": "Validation failed",
+    "errors": [
+        {
+            "property": "name",
+			"value": 'super',
+            "code": "INVALID_FORMAT_LENGTH_PARAMETER",
+            "message": "should NOT be shorter than 3 characters"
+        },
+        {
+            "field": "name",
+            "code": "INVALID_PATTERN_PARAMETER",
+            "message": "should match pattern \"^[A-Za-z]\\w{2,}\""
+        }
+    ],
+	"": [
+		{
+		  "target": CreateditentialsDto { email: '', password: 'super' },
+		  "value": 'super',
+		  "property": 'password',
+		  "children": [],
+		  "constraints": {
+			"minLength": 'password must be longer than or equal to 8 characters'
+		  }
+		},
+		{
+		  "target": CreateditentialsDto { email: '', password: 'super' },
+		  "value": '',
+		  "property": 'email',
+		  "children": [],
+		  "constraints": { "isNotEmpty": 'email should not be empty' }
+		}
+	  ]
+
+}
