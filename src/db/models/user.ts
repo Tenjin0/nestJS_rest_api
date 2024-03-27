@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { Model } from 'objection'
+import { Model, RelationMappings, RelationMappingsThunk } from 'objection'
 import * as bcrypt from 'bcrypt'
+import { Task } from './task'
 @Injectable()
 export class User extends Model {
 	static tableName = 'users'
@@ -23,5 +24,18 @@ export class User extends Model {
 	async validatePassword(password) {
 		const hash = await bcrypt.hash(password, this.salt)
 		return hash === this.password
+	}
+
+	static get relationMappings(): RelationMappings | RelationMappingsThunk {
+		return {
+			tasks: {
+				relation: Model.HasManyRelation,
+				modelClass: Task,
+				join: {
+					from: 'users.id',
+					to: 'tasks.id_user',
+				},
+			},
+		}
 	}
 }

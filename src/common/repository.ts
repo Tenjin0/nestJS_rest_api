@@ -7,15 +7,18 @@ import { Dto } from './dto.interface'
 export default class CustomRepository<MyModel extends Model, createDto extends Dto> {
 	constructor(protected model: typeof Model) {}
 
-	create(model: createDto) {
+	create(model: createDto, args?: any): Promise<MyModel>
+	create(model: createDto): Promise<MyModel> {
 		return this.model.query().insert(model).returning('*') as unknown as Promise<MyModel>
 	}
 
-	findAll() {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	findAll(_args?: any) {
 		return this.model.query().select().whereNotNull('deleted_at')
 	}
 
-	findById(id: string) {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	findById(id: string, _args?: any) {
 		return this.model.query().findById(id)
 	}
 

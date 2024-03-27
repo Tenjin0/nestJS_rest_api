@@ -6,20 +6,21 @@ import { Dto } from './dto.interface'
 export default class CustomService {
 	constructor(@Inject(CustomRepository) private repo: CustomRepository<Model, Dto>) {}
 
+	create(createDto: Dto, args?: any) {
+		return this.repo.create(createDto, args)
+	}
+
+	findAll(args?: any) {
+		return this.repo.findAll(args)
+	}
+
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	create(createDto: Dto, ..._args: any[]) {
-		return this.repo.create(createDto)
-	}
-
-	findAll() {
-		return this.repo.findAll()
-	}
-
-	findById(id: string) {
+	findById(id: string, _args?: any) {
 		return this.repo.findById(id)
 	}
 
-	updateById(id: string, model: Partial<Dto>) {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	updateById(id: string, model: Partial<Dto>, _args?: any) {
 		return this.repo.updateById(id, model)
 	}
 

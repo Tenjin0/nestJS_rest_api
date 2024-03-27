@@ -1,5 +1,4 @@
 import { Knex } from 'knex'
-
 const configuration = {
 	client: 'postgresql',
 	connection: {
