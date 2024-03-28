@@ -14,7 +14,7 @@ export default class CustomRepository<MyModel extends Model, createDto extends D
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	findAll(_args?: any) {
-		return this.model.query().select().whereNotNull('deleted_at')
+		return this.model.query().select().whereNull('deleted_at')
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

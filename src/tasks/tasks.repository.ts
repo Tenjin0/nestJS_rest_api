@@ -19,7 +19,7 @@ export class TasksRepository extends Repository<Task, CreateTaskDto> {
 
 	findAll(idUser: string) {
 		console.log(idUser)
-		return this.model.query().select().whereNotNull('deleted_at').andWhere('id_user', '=', idUser)
+		return this.model.query().select().whereNull('deleted_at').andWhere('id_user', '=', idUser)
 	}
 
 	findById(id: string, idUser: string) {

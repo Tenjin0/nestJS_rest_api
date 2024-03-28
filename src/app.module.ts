@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config'
 import { UsersModule } from './users/users.module'
 import { AuthModule } from './auth/auth.module'
 import configuration from './config'
+import { SocketModule } from './socket/socket.module'
 
 console.log('.env.' + process.env.NODE_ENV)
 @Module({
@@ -18,6 +19,7 @@ console.log('.env.' + process.env.NODE_ENV)
 		TasksModule,
 		UsersModule,
 		AuthModule,
+		SocketModule,
 	],
 	controllers: [],
 })

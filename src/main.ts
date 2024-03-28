@@ -5,6 +5,10 @@ import { BadRequestExceptionFilter, CustomErrorFilter, HttpExceptionFilter } fro
 import { BadRequestException, ValidationPipe } from '@nestjs/common'
 import CustomError from './helpers/customError'
 import { ValidationError } from 'class-validator'
+import { SocketIOAdapter } from './socket/socket.io.adapter'
+import { JwtService } from '@nestjs/jwt'
+import { SocketService } from './socket/socket.service'
+// import { Server } from 'socket.io'
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule)
@@ -37,8 +41,32 @@ async function bootstrap() {
 	app.useGlobalFilters(new BadRequestExceptionFilter())
 	app.useGlobalFilters(new CustomErrorFilter())
 	app.setGlobalPrefix('api', { exclude: ['auth/signin', 'auth/test'] })
-
 	const configService = app.get(ConfigService)
+	const jwtService = app.get(JwtService)
+
+	app.useWebSocketAdapter(new SocketIOAdapter(app, configService, jwtService))
+
+	// const io = new Server(app.getHttpServer())
 	await app.listen(configService.get('port'))
+
+	const socketService = app.get(SocketService)
+
+	// socketService.socket = io
+	const nsp = socketService.getNamespace('/innovation')
+	nsp.use((socket, next) => {
+		const token = socket.handshake.auth.token || socket.handshake.headers['token']
+
+		console.log('token', socket.id, token)
+
+		next()
+	})
+	nsp.on('connection', (socket) => {
+		console.log(socket.id, 'connected')
+		nsp.emit('central.init', [], [])
+		socket.on('central.init', (payload) => {
+			console.log(socket.id, 'init received', payload)
+			nsp.emit('central.init.ack')
+		})
+	})
 }
 bootstrap()
