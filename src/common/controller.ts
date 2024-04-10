@@ -1,4 +1,4 @@
-import { Post, Body, Get, Param, Put, Delete, ValidationPipe, UsePipes } from '@nestjs/common'
+import { Post, Body, Get, Param, Put, Delete, ValidationPipe, UsePipes, Query } from '@nestjs/common'
 import CustomService from './service'
 import { Dto } from './dto.interface'
 
@@ -14,7 +14,7 @@ export class CustomController<CreateDto extends Dto> {
 
 	@Get('/')
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	gets(args?: any) {
+	gets(@Query() filter: any, args?: any) {
 		return this.service.findAll(args)
 	}
 

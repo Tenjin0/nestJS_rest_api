@@ -8,6 +8,7 @@ import {
 	Put,
 	UseGuards,
 	UsePipes,
+	Query,
 	ValidationPipe,
 } from '@nestjs/common'
 import { TasksService } from './tasks.service'
@@ -16,19 +17,20 @@ import { CustomController } from 'src/common/controller'
 import { AuthGuard } from '@nestjs/passport'
 import { ReqUser } from '../auth/req.user.decorator'
 import { User } from '../db/models/user'
-import { SocketService } from '../socket/socket.service'
+import { RedisService2 } from '../redis/redis.service2'
 
 @UseGuards(AuthGuard())
 @Controller('tasks')
 export class TasksController extends CustomController<CreateTaskDto> implements OnApplicationBootstrap {
 	constructor(
 		private taskService: TasksService,
-		private socketService: SocketService,
+		redisService: RedisService2,
 	) {
 		super(taskService)
+		console.log(redisService.getPouet())
 	}
 	onApplicationBootstrap() {
-		console.log('onApplicationBootstrap')
+		console.log('TasksController.onApplicationBootstrap')
 	}
 
 	@Post('/')
@@ -38,8 +40,8 @@ export class TasksController extends CustomController<CreateTaskDto> implements 
 	}
 
 	@Get('/')
-	gets(@ReqUser() user: User) {
-		this.socketService.getNamespace('/innovation').emit('central.init', [], [])
+	gets(@Query() filter: any, @ReqUser() user: User) {
+		console.log(filter)
 		return this.service.findAll(user.id)
 	}
 

@@ -27,7 +27,6 @@ async function bootstrap() {
 							const firstConstraint = Object.keys(error.constraints)[0]
 							const subCodeError = CustomError.convertConstraintToCodeError(firstConstraint)
 							const messsage = error.constraints[firstConstraint]
-							console.log(firstConstraint, error.constraints)
 							ce.addSubError(error.property, subCodeError, messsage, error.value)
 						}
 					}
